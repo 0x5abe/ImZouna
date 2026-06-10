@@ -297,9 +297,7 @@ struct MeshPc_ZV1_06_63_02 : Mesh_ZV1_06_63_02 {
     DynArray_Z<u32> unknown3;
     std::assert(unknown3.size == 0, "unknown3.size != 0");
 
-    DynArray_Z<u32> unknown4;
-    std::assert(unknown4.size == 0, "unknown4.size != 0");
-
+    DynArray_Z<u32> primitive_info_indices;
     MeshBuffers_Z mesh_buffers;
 };
 
