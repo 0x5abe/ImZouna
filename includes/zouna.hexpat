@@ -211,9 +211,17 @@ using Vec4i16 = Vec<i16, 4>;
 using Quat = Vec<f32, 4>;
 using Quati16 = Vec<i16, 4>;
 
+using Name_Z = i32;
+using Name_Z64 = i64;
+
 struct Mat3f {
     /// left to right top to bottom. Row major.
     Vec3f data[3] [[inline]];
+};
+
+struct Mat3x3 {
+    /// left to right top to bottom. Row major.
+    f32 data[12] [[inline]];
 };
 
 struct Mat4f {
@@ -221,12 +229,50 @@ struct Mat4f {
     Vec4f data[4] [[inline]];
 };
 
+using Mat4x4 = Mat4f;
+
 using RGB = Vec3f;
 using RGBA = Vec4f;
+
+struct Box_Z {
+    Mat3x3 mat;
+    Vec3f scale;
+    float radius;
+};
+
+struct BoxCol_Z {
+    Box_Z box;
+    u32 flag;
+    Name_Z name;
+};
 
 struct Sphere_Z {
     Vec3f center;
     f32 radius;
+};
+
+struct SphereCol_Z {
+    Sphere_Z sphere;
+    u32 flag;
+    Name_Z name;
+};
+
+struct Segment_Z {
+    Vec3f origin;
+    f32 length;
+    Vec3f direction;
+    f32 pad;
+};
+
+struct Cylindre_Z {
+    Segment_Z seg;
+    f32 radius;
+};
+
+struct CylindreCol_Z {
+    Cylindre_Z cylindre;
+    u32 flag;
+    Name_Z name;
 };
 
 struct Rect {
@@ -235,9 +281,6 @@ struct Rect {
     i32 x2;
     i32 y2;
 };
-
-using Name_Z = i32;
-using Name_Z64 = i64;
 
 struct Message_Z {
     /// Observed values:
