@@ -349,24 +349,38 @@ struct ObjectDatas_Z : ResourceObject_Z {
 };
 
 bitfield ObjectFlags {
-    FL_OBJECT_INIT : 1; // ?
-    FL_OBJECT_MAX_BSPHERE : 1; // ?
-    FL_OBJECT_SKINNED : 1; // Skinned geometry
-    FL_OBJECT_MORPHED : 1; // Morphed geometry
-    FL_OBJECT_ORIENTEDBBOX : 1; // Oriented box
-    FL_OBJECT_NO_SEADDISPLAY : 1; // Don't use SEADS for display
-    FL_OBJECT_NO_SEADCOLLIDE : 1; // Don't use SEADS for collide
-    FL_OBJECT_NO_DISPLAY : 1; // Don't display object
-    FL_OBJECT_TRANSPARENT : 1; // Object has transparent components
-    FL_OBJECT_OPTIMIZED_VERTEX : 1; // Object has optimized vertices
-    FL_OBJECT_LINEAR_MAPPING : 1; // Object process generate UV to get linear mapping
-    FL_OBJECT_SKINNED_WITH_ONE_BONE : 1; // Skinned geometry with only one bone which is not a usual skin.
-    FL_OBJECT_LIGHT_BAKED : 1; //  Light baken
-    FL_OBJECT_LIGHT_BAKED_WITH_MATERIAL : 1; // Light baken with material and dynamic lights
-    FL_OBJECT_SHADOW_RECEIVER : 1; // Light baken with material and dynamic lights
-    FL_OBJECT_NO_TESSELATE : 1; // Surface will not be tessalate
-    FL_OBJECT_LAST : 1; // Last engine flag, first game flag
-    padding : 15;
+    FL_OBJECT_MAX_BSPHERE : 1; // 0x1 - BSphere is already at max radius, so it shouldn't be recalculated anymore
+    FL_OBJECT_SKINNED : 1; // 0x2 - Skinned geometry
+    FL_OBJECT_NO_SEADDISPLAY : 1; // 0x4 - Don't use SEADS for display
+    FL_OBJECT_NO_SEADCOLLIDE : 1; // 0x8 - Don't use SEADS for collide
+    FL_OBJECT_UNK_0x10 : 1; // 0x10 - Unknown (Used in Mesh_Z)
+    FL_OBJECT_UNK_0x20 : 1; // 0x20 - Unknown (Used in Mesh_Z)
+    FL_OBJECT_NO_DISPLAY : 1; // 0x40 - Don't display object
+    FL_OBJECT_SHADOW_VOLUME : 1; // 0x80 - Object has transparent components
+    FL_OBJECT_UNK_0x100 : 1; // 0x100 - Unknown - Is used in MeshGC_Z::DrawWithMaterials (only when passed from the Skin) to decide whether to draw immediate or push a draw call
+    FL_OBJECT_UNK_0x200 : 1; // 0x200 - Unknown
+    FL_OBJECT_UNK_0x400 : 1; // 0x400 - Unknown
+    FL_OBJECT_UNK_0x800 : 1; // 0x800 - Unknown
+    FL_OBJECT_UNK_0x1000 : 1; // 0x1000 - Unknown
+    FL_OBJECT_UNK_0x2000 : 1; // 0x2000 - Unknown
+    FL_OBJECT_UNK_0x4000 : 1; // 0x4000 - Unknown
+    FL_OBJECT_UNK_0x8000 : 1; // 0x8000 - Unknown
+    FL_OBJECT_UNK_0x10000 : 1; // 0x10000 - Unknown
+    FL_OBJECT_UNK_0x20000 : 1; // 0x20000 - Unknown
+    FL_OBJECT_UNK_0x40000 : 1; // 0x40000 - Unknown
+    FL_OBJECT_UNK_0x80000 : 1; // 0x80000 - Unknown
+    FL_OBJECT_ACTIVE : 1;  // 0x100000 - Is the object active (Used by Light_Z and Omni_Z)
+    FL_OBJECT_IS_SPLINE_TRACK_LOOP : 1; // 0x200000 - Unknown
+    FL_OBJECT_UNK_0x400000 : 1; // 0x400000 - Unknown
+    FL_OBJECT_UNK_0x800000 : 1; // 0x800000 - Unknown
+    FL_OBJECT_UNK_0x1000000 : 1; // 0x1000000 - Unknown
+    FL_OBJECT_IS_OMNI_UNK_SPHEREVSBOX_1 : 1; // 0x2000000 - Unknown
+    FL_OBJECT_IS_OMNI_UNK_0x4000000 : 1; // 0x4000000 - Unknown
+    FL_OBJECT_IS_OMNI_SPOTLIGHT : 1; // 0x8000000 - Omni_Z is a spotlight (Used by Omni_Z)
+    FL_OBJECT_IS_OMNI_UNK_SPHEREVSBOX_2 : 1; // 0x10000000 - Unknown
+    FL_OBJECT_UNK_0x20000000 : 1; // 0x20000000 - Unknown
+    FL_OBJECT_UNK_0x40000000 : 1; // 0x40000000 - Unknown
+    FL_OBJECT_UNK_0x80000000 : 1; // 0x80000000 - Unknown
 };
 
 enum ObjectType : u16 {
