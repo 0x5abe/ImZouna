@@ -69,9 +69,10 @@ def worker():
                     "run",
                     "-v",
                     "-I",
-                    IMZOUNA_DIR / "includes",
-                    path.absolute(),
-                    IMZOUNA_DIR / f"patterns/fuel/{os.path.splitext(path)[1][1:]}.hexpat",
+                    str(IMZOUNA_DIR / "includes"),
+                    "--pattern",
+                    str(IMZOUNA_DIR / f"patterns/{game}/{os.path.splitext(path)[1][1:]}.hexpat"),
+                    str(path.absolute()),
                 ],
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
@@ -88,6 +89,7 @@ def worker():
 
 def main():
     global imhex_path
+    global game
     total = 0
     parser = argparse.ArgumentParser()
     parser.add_argument("-C", help="Working directory", type=str, default=".")
@@ -98,8 +100,12 @@ def main():
     parser.add_argument(
         "--imhex", help="Path to ImHex executable", type=str, default="imhex"
     )
+    parser.add_argument(
+        "--game", help="Game to test", type=str, default="fuel"
+    )
     args = parser.parse_args()
     imhex_path = args.imhex
+    game = args.game
     t0 = time.time()
     for i in range(args.j):
         Thread(target=worker, daemon=True).start()
