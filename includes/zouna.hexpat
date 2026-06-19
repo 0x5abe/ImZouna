@@ -480,29 +480,31 @@ struct KeyframerNoFlagsTpl_Z<TKey> : Keyframer_Z {
     DynArray_Z<TKey> keyframes;
 };
 
+using Vec4Comp = Vec<NumeratorFloat<i16, 4096>, 4>;
 using Vec3Comp = Vec<NumeratorFloat<i16, 4096>, 3>;
+using Vec2Comp = Vec<NumeratorFloat<i16, 4096>, 2>;
 using QuatComp = Vec<NumeratorFloat<i16, 2000>, 4>;
 
 using KeyFlag_Z = KeyLinearTpl_Z<u32>;
 using KeyHdl_Z = KeyLinearTpl_Z<Name_Z>;
 using KeyMessage_Z = KeyLinearTpl_Z<DynArray_Z<Message_Z>>;
 using KeyFloat_Z = KeyTgtTpl_Z<f32>;
-using KeyFloatComp_Z = KeyTgtTpl_Z<i16>;
+using KeyFloatComp_Z = KeyTgtTpl_Z<NumeratorFloat<i16, 4096>>;
 using KeyFloatLinear_Z = KeyLinearTpl_Z<f32>;
-using KeyFloatLinearComp_Z = KeyLinearTpl_Z<i16>;
+using KeyFloatLinearComp_Z = KeyLinearTpl_Z<NumeratorFloat<i16, 4096>>;
 using KeyU32Linear_Z = KeyLinearTpl_Z<u32>;
 using KeyVec2f_Z = KeyTgtTpl_Z<Vec2f>;
-using KeyVec2fComp_Z = KeyTgtTpl_Z<Vec2i16>;
+using KeyVec2fComp_Z = KeyTgtTpl_Z<Vec2Comp>;
 using KeyVec2fLinear_Z = KeyLinearTpl_Z<Vec2f>;
-using KeyVec2fLinearComp_Z = KeyLinearTpl_Z<Vec2i16>;
+using KeyVec2fLinearComp_Z = KeyLinearTpl_Z<Vec2Comp>;
 using KeyVec3f_Z = KeyTgtTpl_Z<Vec3f>;
 using KeyVec3fComp_Z = KeyTgtTpl_Z<Vec3Comp>;
 using KeyVec3fLinear_Z = KeyLinearTpl_Z<Vec3f>;
 using KeyVec3fLinearComp_Z = KeyLinearTpl_Z<Vec3Comp>;
 using KeyVec4f_Z = KeyTgtTpl_Z<Vec4f>;
-using KeyVec4fComp_Z = KeyTgtTpl_Z<Vec4i16>;
+using KeyVec4fComp_Z = KeyTgtTpl_Z<Vec4Comp>;
 using KeyVec4fLinear_Z = KeyLinearTpl_Z<Vec4f>;
-using KeyVec4fLinearComp_Z = KeyLinearTpl_Z<Vec4i16>;
+using KeyVec4fLinearComp_Z = KeyLinearTpl_Z<Vec4Comp>;
 using KeyRot_Z = KeyLinearTpl_Z<QuatComp>;
 using KeyBezierRot_Z = KeyTgtTpl_Z<Vec3f>;
 
