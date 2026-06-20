@@ -48,9 +48,9 @@ struct Node_Z : ResourceObject_Z {
     RGBA color;
     Sphere_Z sphere;   
     /// { -1, -1, -1, -1 }
-    Rect display_seads_rect;
+    Rect<i32> display_seads_rect;
     /// { -1, -1, 0, 0 }
-    Rect collide_seads_rect;
+    Rect<i32> collide_seads_rect;
     /// -1 in the file
     /// Set to -4 on load
     i16 negative_four;

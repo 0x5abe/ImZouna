@@ -2,6 +2,11 @@
 
 #include <zouna.hexpat>
 
+struct ResourceObject_ZV1_06_63_02 : BaseObject_Z {
+    Name_Z link_name;
+    DynArray_Z<Name_Z> linked_resources;
+};
+
 bitfield AnimFramePlayFlags {
     FL_ANIM_PLAY : 1;
     FL_ANIM_STARTED : 1;
@@ -18,7 +23,7 @@ bitfield AnimFramePlayFlags {
 struct KeyFollow_Z {
     Name_Z node_name;
     Vec3f axis;
-    float avance;
+    f32 progress;
     u32 orient;
 };
 
@@ -37,15 +42,10 @@ struct KeyStartStop_Z {
 
 using KeyframerStartStop_Z = KeyframerNoFlagsTpl_Z<KeyStartStop_Z>;
 
-struct ResourceObject_ZV1_06_63_02 : BaseObject_Z {
-    Name_Z link_name;
-    DynArray_Z<Name_Z> linked_resources;
-};
-
 struct AnimFrame_ZV1_06_63_02 : ResourceObject_ZV1_06_63_02 {
     Name_Z node_name;
     std::assert(node_name, "Node name must be specified");
-    float duration;
+    f32 duration;
     std::assert(duration > 0, "Duration must be positive");
     KeyframerVec3f_Z translation_keyframer;
     KeyframerRot_Z rot_keyframer;
@@ -55,12 +55,13 @@ struct AnimFrame_ZV1_06_63_02 : ResourceObject_ZV1_06_63_02 {
     KeyframerVec3fLinear_Z ambient_keyframer; // for light
     KeyframerMessage_Z msg_keyframer;
     KeyframerFollow_Z follow_keyframer;
+    std::assert(follow_keyframer.keyframes.size == 0 || follow_keyframer.keyframes.size == 1, "Follow keyframer must have 0 or 1 keyframe");
     KeyframerStartStop_Z start_stop_keyframer; // start and stop other anim frames
-    float cur_time;
+    f32 cur_time;
     std::assert(cur_time == 0, "Current time must be zero");
-    float start_time;
+    f32 start_time;
     std::assert(start_time == 0, "Start time must be zero");
-    float prev_time;
+    f32 prev_time;
     std::assert(prev_time == 0, "Previous time must be zero");
     AnimFramePlayFlags play_flags;
 };

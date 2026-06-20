@@ -219,7 +219,7 @@ struct Mat3f {
     Vec3f data[3] [[inline]];
 };
 
-struct Mat3x3 {
+struct Mat3x4f {
     /// left to right top to bottom. Row major.
     f32 data[12] [[inline]];
 };
@@ -235,9 +235,9 @@ using RGB = Vec3f;
 using RGBA = Vec4f;
 
 struct Box_Z {
-    Mat3x3 mat;
+    Mat3x4f mat;
     Vec3f scale;
-    float radius;
+    f32 radius;
 };
 
 struct BoxCol_Z {
@@ -275,11 +275,11 @@ struct CylindreCol_Z {
     Name_Z name;
 };
 
-struct Rect {
-    i32 x1;
-    i32 y1;
-    i32 x2;
-    i32 y2;
+struct Rect<T> {
+    T x1;
+    T y1;
+    T x2;
+    T y2;
 };
 
 struct Message_Z {
