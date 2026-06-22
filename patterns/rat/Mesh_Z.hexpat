@@ -18,16 +18,18 @@ struct Object_ZV1_06_63_02 : ResourceObject_ZV1_06_63_02 {
 
 // Tangent Binormal Vertex ? - From Monopoly MAP
 struct TBVtx {
-    Vec2f unknown0;
-    Vec2f unknown1;
+    Vec3f tangent;
+    f32 handedness;
 };
 
 struct MorphValue_Z {
-    u8 pad[16];
+    Vec3f displacement;
+    u16 self_idx;
+    u8 pad[2] [[hidden]];
 };
 
 struct MorphTargetDesc_Z {
-    Name_Z mesh_name;
+    Name_Z name;
     DynArray_Z<MorphValue_Z> morph_values;
 };
 
@@ -58,7 +60,7 @@ struct Vtx_Z {
 
 struct Strip_Z {
     DynArray_Z<u16> strip_vertices_indices;
-    Name_Z material_name;
+    u32 material_idx;
     /// 1/2
     u32 tri_order;
 };
@@ -103,7 +105,7 @@ struct Mesh_ZV1_06_63_02 : Points_ZV1_06_63_02 {
 
     if (flags.FL_OBJECT_SKINNED)
     {
-        Name_Z strip_override_material_names[strips.size];
+        u32 strip_override_material_indices[strips.size];
     }
 
     DynArray_Z<StripExt_Z> strip_exts;
@@ -158,10 +160,17 @@ struct IndexBufferExt_Z {
     u16 data[index_count];
 };
 
-using VertexVectorComponent = u8 [[format("format_vertex_vector_component"), transform("format_vertex_vector_component")]];
+using VertexVectorComponent = u8 [[
+    transform("transform_vertex_vector_component"),
+    format("format_vertex_vector_component")
+]];
 
-fn format_vertex_vector_component(u8 vvc) {
+fn transform_vertex_vector_component(u8 vvc) {
     return (vvc / 255.0) * 2 - 1;
+};
+
+fn format_vertex_vector_component(f32 vvc) {
+    return std::format("{}", vvc);
 };
 
 using VertexVector3u8 = Vec<VertexVectorComponent, 3>;
@@ -386,13 +395,15 @@ struct PrimitiveInfo_Z {
 
 struct MeshBuffers_Z {
     DynArray_Z<VertexBufferExt_Z> vertex_buffers;
+    std::assert(vertex_buffers.size == 1 || vertex_buffers.size == 0, "vertex_buffers.size expected to be 1 or 0");
     DynArray_Z<IndexBufferExt_Z> index_buffers;
+    std::assert(index_buffers.size == 1 || index_buffers.size == 0, "index_buffers.size expected to be 1 or 0");
     DynArray_Z<PrimitiveInfo_Z> primitive_infos;
 };
 
 struct MeshPc_ZV1_06_63_02 : Mesh_ZV1_06_63_02 {
     DynArray_Z<u32> unknown3;
-    std::assert(unknown3.size == 0, "unknown3.size != 0");
+    std::assert(unknown3.size == 0, "unknown3.size expected to be 0");
 
     DynArray_Z<u32> primitive_info_indices;
     MeshBuffers_Z mesh_buffers;

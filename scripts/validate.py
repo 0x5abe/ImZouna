@@ -57,6 +57,32 @@ q = Queue()
 faileds = []
 
 
+def decode_process_output(output):
+    return output.decode("utf-8", errors="replace")
+
+
+def sanitize_error_line(line):
+    return (
+        line.replace("\r", "")
+        .replace("\n", "")
+        .replace("\\r", "")
+        .replace("\\n", "")
+        .strip()
+    )
+
+
+def get_last_error_occurrence(stdout, stderr):
+    lines = []
+    for output in (stdout, stderr):
+        lines.extend(decode_process_output(output).splitlines())
+    for line in reversed(lines):
+        stripped = sanitize_error_line(line)
+        lowered = stripped.lower()
+        if "[error]" in lowered and lowered != "[error]":
+            return stripped
+    return "No [ERROR] occurrence found"
+
+
 def worker():
     try:
         while True:
@@ -80,8 +106,7 @@ def worker():
             stdout, stderr = process.communicate()
             exit_code = process.wait()
             if exit_code != 0:
-                print(path.absolute(), stdout, stderr, exit_code)
-                faileds.append((path.absolute(), stdout, stderr, exit_code))
+                faileds.append((path.absolute(), get_last_error_occurrence(stdout, stderr)))
             q.task_done()
     except (KeyboardInterrupt, SystemExit):
         os._exit(0)
@@ -119,8 +144,8 @@ def main():
     print(f"{total} tests, {len(faileds)} failed, {total-len(faileds)} passed")
     if len(faileds) != 0:
         print("Failing tests:")
-        for failed in faileds:
-            print(f"  {failed}")
+        for path, error in faileds:
+            print(f"  {path}: {error}")
 
 
 if __name__ == "__main__":
