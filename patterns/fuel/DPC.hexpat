@@ -20,7 +20,7 @@ struct VersionTriple {
 
 struct Header {
     char version[256];
-    u32 is_not_rtc;
+    u32 flags; // 0x1 means the DPC contains compressed objects
     u32 block_count;
     u32 block_working_buffer_capacity_even;
     u32 block_working_buffer_capacity_odd;
@@ -140,15 +140,37 @@ fn blocks_assert(ref auto header, ref auto blocks) {
     return true;
 };
 
+fn objects_not_compressed(ref auto objects) {
+    for (u32 object_index = 0, object_index < std::core::member_count(objects), object_index += 1) {
+        if (objects[object_index].header.compressed_size != 0) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
+fn block_objects_not_compressed(ref auto blocks) {
+    for (u32 block_index = 0, block_index < std::core::member_count(blocks), block_index += 1) {
+        if (!objects_not_compressed(blocks[block_index].objects)) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
 struct DPC {
     Header header;
     Block blocks[header.block_count];
     // std::assert(blocks_assert(header, blocks), "!blocks_assert(header, blocks)");
     if (header.pool_manifest_padded_size != 0) {
         Pool pool;
+        std::assert((header.flags & 0x1) != 0 || objects_not_compressed(pool.pool_objects), "DPC without compression flag contains a compressed pool object");
     }
 };
 
 DPC dpc @ 0x0;
 
+std::assert((dpc.header.flags & 0x1) != 0 || block_objects_not_compressed(dpc.blocks), "DPC without compression flag contains a compressed block object");
 std::assert(std::mem::eof(), "Whole input not consumed");
