@@ -13,14 +13,14 @@ See also: [zouna-templates-docs](https://github.com/SabeMP/zouna-templates-docs)
 #### Common
 
 | Name       | MIME | Path                                                       |
-|------------|------|------------------------------------------------------------|
+| ---------- | ---- | ---------------------------------------------------------- |
 | Bff Header |      | [`includes/bff_header.hexpat`](includes/bff_header.hexpat) |
 | Zouna      |      | [`includes/zouna.hexpat`](includes/zouna.hexpat)           |
 
 #### BigFile
 
-| Year | Game                                                                                        | Format     | Pattern                                                                             |
-|------|---------------------------------------------------------------------------------------------|------------|------------------------------------------------------------------------------------|
+| Year | Game                                                                                        | Format     | Pattern                                                                            |
+| ---- | ------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------- |
 | 2002 | Jimmy Neutron: Boy Genius - BigSky                                                          | Kalisto    | [`patterns/ducks/DPC.hexpat`](patterns/ducks/DPC.hexpat)                           |
 |      | SpongeBob SquarePants: Revenge of the Flying Dutchman - BigSky                              | Kalisto    | [`patterns/ducks/DPC.hexpat`](patterns/ducks/DPC.hexpat)                           |
 |      | Spirits & Spells (Castleween) (Mahou no Pumpkin) - Wanadoo                                  | Kalisto    | [`patterns/ducks/DPC.hexpat`](patterns/ducks/DPC.hexpat)                           |
@@ -60,16 +60,19 @@ See also: [zouna-templates-docs](https://github.com/SabeMP/zouna-templates-docs)
 
 #### Ratatouille
 
-| Name | MIME | Path                                                     |
-|------|------|----------------------------------------------------------|
-| AIF  |      | [`patterns/walle/AIF.hexpat`](patterns/walle/AIF.hexpat) |
-| SDX  |      | [`patterns/walle/SDX.hexpat`](patterns/walle/SDX.hexpat) |
-| VAI  |      | [`patterns/rat/VAI.hexpat`](patterns/rat/VAI.hexpat)     |
+| Name        | MIME                       | Path                                                                 |
+| ----------- | -------------------------- | -------------------------------------------------------------------- |
+| AnimFrame_Z | application/x-anim-frame-z | [`patterns/rat/AnimFrame_Z.hexpat`](patterns/rat/AnimFrame_Z.hexpat) |
+| Mesh_Z      | application/x-mesh-z       | [`patterns/rat/Mesh_Z.hexpat`](patterns/rat/Mesh_Z.hexpat)           |
+| Node_Z      | application/x-node-z       | [`patterns/rat/Node_Z.hexpat`](patterns/rat/Node_Z.hexpat)           |
+| AIF         |                            | [`patterns/walle/AIF.hexpat`](patterns/walle/AIF.hexpat)             |
+| SDX         |                            | [`patterns/walle/SDX.hexpat`](patterns/walle/SDX.hexpat)             |
+| VAI         |                            | [`patterns/rat/VAI.hexpat`](patterns/rat/VAI.hexpat)                 |
 
 #### WALL-E
 
 | Name | MIME | Path                                                     |
-|------|------|----------------------------------------------------------|
+| ---- | ---- | -------------------------------------------------------- |
 | AIF  |      | [`patterns/walle/AIF.hexpat`](patterns/walle/AIF.hexpat) |
 | JOE  |      | [`patterns/walle/JOE.hexpat`](patterns/walle/JOE.hexpat) |
 | SDX  |      | [`patterns/walle/SDX.hexpat`](patterns/walle/SDX.hexpat) |
@@ -77,7 +80,7 @@ See also: [zouna-templates-docs](https://github.com/SabeMP/zouna-templates-docs)
 #### FUEL
 
 | Name            | MIME                           | Path                                                                           |
-|-----------------|--------------------------------|--------------------------------------------------------------------------------|
+| --------------- | ------------------------------ | ------------------------------------------------------------------------------ |
 | Animation_Z     | application/x-animation-z      | [`patterns/fuel/Animation_Z.hexpat`](patterns/fuel/Animation_Z.hexpat)         |
 | Binary_Z        | application/x-binary-z         | [`patterns/fuel/Binary_Z.hexpat`](patterns/fuel/Binary_Z.hexpat)               |
 | Bitmap_Z        | application/x-bitmap-z         | [`patterns/fuel/Bitmap_Z.hexpat`](patterns/fuel/Bitmap_Z.hexpat)               |
@@ -117,7 +120,7 @@ See also: [zouna-templates-docs](https://github.com/SabeMP/zouna-templates-docs)
 ### A Plague Tale: Innocence
 
 | Name             | MIME | Path                                                                             |
-|------------------|------|----------------------------------------------------------------------------------|
+| ---------------- | ---- | -------------------------------------------------------------------------------- |
 | psc              |      | [`patterns/apti/psc.hexpat`](patterns/apti/psc.hexpat)                           |
 | psc_data         |      | [`patterns/apti/psc_data.hexpat`](patterns/apti/psc_data.hexpat)                 |
 | StreamSoundNames |      | [`patterns/apti/StreamSoundNames.hexpat`](patterns/apti/StreamSoundNames.hexpat) |
@@ -126,7 +129,7 @@ See also: [zouna-templates-docs](https://github.com/SabeMP/zouna-templates-docs)
 ### Shaun White
 
 | Name         | MIME | Path                                                                               |
-|--------------|------|------------------------------------------------------------------------------------|
+| ------------ | ---- | ---------------------------------------------------------------------------------- |
 | CPS          |      | [`patterns/shaunwhite/CPS.hexpat`](patterns/shaunwhite/CPS.hexpat)                 |
 | CPSScript    |      | [`patterns/shaunwhite/CPSScript.hexpat`](patterns/shaunwhite/CPSScript.hexpat)     |
 | Gear BigFile |      | [`patterns/shaunwhite/GearBigFile.hexpat`](patterns/shaunwhite/GearBigFile.hexpat) |
@@ -134,14 +137,14 @@ See also: [zouna-templates-docs](https://github.com/SabeMP/zouna-templates-docs)
 ### The Mighty Quest for Epic Loot
 
 | Name           | MIME | Path                                                                           |
-|----------------|------|--------------------------------------------------------------------------------|
+| -------------- | ---- | ------------------------------------------------------------------------------ |
 | SettingsBin    |      | [`patterns/mqfel/SettingsBin.hexpat`](patterns/mqfel/SettingsBin.hexpat)       |
 | StreamingAudio |      | [`patterns/mqfel/StreamingAudio.hexpat`](patterns/mqfel/StreamingAudio.hexpat) |
 
 ### Scripts
 
 | Name      | Path                                           | Description                                                    |
-|-----------|------------------------------------------------|----------------------------------------------------------------|
+| --------- | ---------------------------------------------- | -------------------------------------------------------------- |
 | catalogue | [`scripts/catalogue.py`](scripts/catalogue.py) | Update the README with known BigFiles                          |
 | converge  | [`scripts/converge.py`](scripts/converge.py)   | Copy unique BigFiles for testing                               |
 | jsonify   | [`scripts/jsonify.py`](scripts/jsonify.py)     | Generates a JSON file from a binary file                       |
@@ -153,20 +156,20 @@ See also: [zouna-templates-docs](https://github.com/SabeMP/zouna-templates-docs)
 ### Pattern Libraries
 
 | Name  | Path                                             | Description   |
-|-------|--------------------------------------------------|---------------|
+| ----- | ------------------------------------------------ | ------------- |
 | zouna | [`includes/zouna.hexpat`](includes/zouna.hexpat) | Zouna Library |
 
 ### Magic files
 
 | Name  | Path                                     | Description                                |
-|-------|------------------------------------------|--------------------------------------------|
+| ----- | ---------------------------------------- | ------------------------------------------ |
 | Zouna | [`magic/zouna_magic`](magic/zouna_magic) | Identifies common file types used in Zouna |
 
 ## Getting Started
 
 ### Prerequisites
 
-* [ImHex](https://imhex.werwolv.net/) >= v1.31.0
+- [ImHex](https://imhex.werwolv.net/) >= v1.31.0
 
 ### Checkout
 

@@ -1,4 +1,4 @@
-#pragma MIME application/x-mesh-z
+#pragma MIME application/x-anim-frame-z
 
 #include <zouna.hexpat>
 
