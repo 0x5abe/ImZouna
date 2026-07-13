@@ -18,7 +18,12 @@ bitfield AnimFramePlayFlags {
     FL_ANIM_MESSAGE : 1;
     FL_ANIM_PAUSED : 1;
     FL_ANIM_UNK_0x200 : 1;
-};
+} [[
+    bitfield_order(
+        std::core::BitfieldOrder::LeastToMostSignificant,
+        32
+    )
+]];
 
 struct KeyFollow_Z {
     Name_Z node_name;

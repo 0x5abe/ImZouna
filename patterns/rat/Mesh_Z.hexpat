@@ -16,7 +16,7 @@ struct Object_ZV1_06_63_02 : ResourceObject_ZV1_06_63_02 {
     ObjectType type;
 };
 
-// Tangent Binormal Vertex ? - From Monopoly MAP
+// Tangent Binormal Vertex - From Monopoly MAP
 struct TBVtx {
     Vec3f tangent;
     f32 handedness;
@@ -61,7 +61,7 @@ struct Vtx_Z {
 struct Strip_Z {
     DynArray_Z<u16> strip_vertices_indices;
     u32 material_idx;
-    /// 1/2
+    /// 1 or 2
     u32 tri_order;
 };
 
@@ -89,7 +89,8 @@ struct AABBCol_Z {
     DynArray_Z<AABBNode_Z> aabb_nodes;
 };
 
-using Vec3f_S16_Z = Vec<NumeratorFloat<i16, 1024>, 3>;
+using Vec3f_S16_10_Z = Vec<NumeratorFloat<i16, 1024>, 3>;
+using Vec3f_S16_12_Z = Vec<NumeratorFloat<i16, 4096>, 3>;
 
 struct Mesh_ZV1_06_63_02 : Points_ZV1_06_63_02 {
     std::assert(type == ObjectType::Mesh_Z, "type != ObjectType::Mesh_Z");
@@ -115,8 +116,10 @@ struct Mesh_ZV1_06_63_02 : Points_ZV1_06_63_02 {
 
     f32 drawing_start_distance;
     f32 drawing_cutoff_distance;
-    u32 shadow_related;
-    u32 unknown0;
+    /// deduplicated face count
+    u32 original_face_count;
+    /// deduplicated vertex count
+    u32 original_vertex_count; 
     u32 unknown1;
     u32 unknown2;
 
@@ -125,8 +128,14 @@ struct Mesh_ZV1_06_63_02 : Points_ZV1_06_63_02 {
     DynArray_Z<CylindreCol_Z> cylindre_cols;
 
     AABBCol_Z aabb_col;
-    DynArray_Z<Vec3f_S16_Z> aabb_col_vertices;
+    if (flags.FL_OBJECT_SKINNED) {
+        DynArray_Z<Vec3f_S16_12_Z> optimized_vertices_skinned;
+    } else {
+        DynArray_Z<Vec3f_S16_10_Z> optimized_vertices;
+    }
 };
+
+// Begin MeshPc_Z
 
 enum VertexLayout : u16 {
     VertexLayoutNoBlend = 0,
@@ -379,7 +388,7 @@ struct PrimitiveInfo_Z {
         }
     }
 
-    // Assume primitive_type is always D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST
+    /// Assume primitive_type is always D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST
     u32 index_count = face_count * 3;
 
     std::assert(index_buffer_index_begin + index_count <=
@@ -409,6 +418,118 @@ struct MeshPc_ZV1_06_63_02 : Mesh_ZV1_06_63_02 {
     MeshBuffers_Z mesh_buffers;
 };
 
-MeshPc_ZV1_06_63_02 mesh_z @ 0x0;
+using MeshPc_Z = le MeshPc_ZV1_06_63_02;
+
+// Begin MeshGC_Z
+
+enum GXVtxFmt : u32 {
+    GX_VTXFMT0,
+    GX_VTXFMT1,
+    GX_VTXFMT2,
+    GX_VTXFMT3,
+    GX_VTXFMT4,
+    GX_VTXFMT5,
+    GX_VTXFMT6,
+    GX_VTXFMT7,
+    GX_MAX_VTXFMT,
+};
+
+// GX_VTXFMT1
+struct MeshGCVertexRef_Z {
+    u16 position_idx;
+    u16 normal_idx;
+    u16 texcoord0_idx;
+    u16 texcoord1_idx;
+};
+
+// GX_VTXFMT2
+struct SkinGCVertexRef_Z {
+    u16 position_idx;
+    u16 normal_idx;
+    u16 texcoord0_idx;
+};
+
+struct DisplayList_Z {
+    /// Size of the display-list data aligned to 32 bytes
+    u32 padded_byte_count;
+
+    /// Size of the meaningful display-list data
+    u32 byte_count;
+
+    std::assert(padded_byte_count >= byte_count,
+        "Display-list padded size is smaller than its actual size");
+
+    u8 primitive_and_vtx_fmt;
+    u16 vertex_ref_count;
+
+    GXVtxFmt vertex_format = primitive_and_vtx_fmt & 0x7 [[hidden]];
+    u32 vertex_size = -1 [[hidden]];
+
+    std::assert(byte_count >= 3,
+        "GX display-list byte_count is smaller than its command header");
+
+    if (vertex_format == GXVtxFmt::GX_VTXFMT1) {
+        vertex_size = 8;
+        u32 vertex_data_size = vertex_ref_count * vertex_size [[hidden]];
+        u32 parsed_byte_count = 3 + vertex_data_size [[hidden]];
+
+        std::assert(byte_count >= parsed_byte_count,
+            "GX_VTXFMT1 display-list vertex data exceeds byte_count");
+
+        MeshGCVertexRef_Z vertex_refs[vertex_ref_count];
+    } else if (vertex_format == GXVtxFmt::GX_VTXFMT2) {
+        vertex_size = 6;
+        u32 vertex_data_size = vertex_ref_count * vertex_size [[hidden]];
+        u32 parsed_byte_count = 3 + vertex_data_size [[hidden]];
+
+        std::assert(byte_count >= parsed_byte_count,
+            "GX_VTXFMT2 display-list vertex data exceeds byte_count");
+
+        SkinGCVertexRef_Z vertex_refs[vertex_ref_count];
+    } else {
+        std::assert(false, "Unsupported GX_VTXFMT in display-list");
+    }
+
+    padding[padded_byte_count - 3 - vertex_ref_count * vertex_size];
+};
+
+struct MeshGC_ZV1_06_63_01 : Mesh_ZV1_06_63_02 {
+    DynArray_Z<NumeratorFloat<i16, 1024>> optimized_texcoords;
+    DynArray_Z<NumeratorFloat<i8, 64>> optimized_normals;
+    DynArray_Z<DisplayList_Z> display_lists;
+    DynArray_Z<Name_Z> material_link_names;
+};
+
+using MeshGC_Z = be MeshGC_ZV1_06_63_01;
+
+// Platform dispatch
+
+struct MeshFile_Z {
+    u64 start_address = $;
+
+    BffHeader platform_probe [[hidden]];
+
+    // Rewind because the selected mesh includes BffHeader itself.
+    $ = start_address;
+
+    match (platform_probe.platform) {
+        (Platform::PC): {
+            MeshPc_Z mesh;
+        }
+
+        (Platform::GameCube): {
+            MeshGC_Z mesh;
+        }
+
+        (_): {
+            std::assert(
+                false,
+                "Unsupported platform for this Mesh_Z pattern"
+            );
+        }
+    }
+};
+
+MeshFile_Z mesh_z @ 0x0;
 
 std::assert(std::mem::eof(), "Whole input not consumed");

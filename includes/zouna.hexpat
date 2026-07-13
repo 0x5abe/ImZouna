@@ -343,7 +343,12 @@ bitfield ObjectDatasFlags {
     FL_OBJECTDATAS_VP3_HIDE : 1; // One bit per viewport
     FL_OBJECTDATAS_LAST : 1; // Last engine flag, first game flag
     padding : 19;
-};
+} [[
+    bitfield_order(
+        std::core::BitfieldOrder::LeastToMostSignificant,
+        32
+    )
+]];
 
 struct ObjectDatas_Z : ResourceObject_Z {
 };
@@ -381,7 +386,12 @@ bitfield ObjectFlags {
     FL_OBJECT_UNK_0x20000000 : 1; // 0x20000000 - Unknown
     FL_OBJECT_UNK_0x40000000 : 1; // 0x40000000 - Unknown
     FL_OBJECT_UNK_0x80000000 : 1; // 0x80000000 - Unknown
-};
+} [[
+    bitfield_order(
+        std::core::BitfieldOrder::LeastToMostSignificant,
+        32
+    )
+]];
 
 enum ObjectType : u16 {
     Points_Z = 0,
