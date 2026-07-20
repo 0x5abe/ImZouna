@@ -502,6 +502,25 @@ struct MeshGC_ZV1_06_63_01 : Mesh_ZV1_06_63_02 {
 
 using MeshGC_Z = be MeshGC_ZV1_06_63_01;
 
+// Begin MeshPs2_Z
+
+struct Qword_Z {
+    u32 data[4] [[inline]];
+};
+
+struct SubMesh_Z {
+    u8 material_idx;
+
+    /// Prebuilt DMA / VIF1 / VU1 data
+    DynArray_Z<Qword_Z> dma_packet;
+};
+
+struct MeshPs2_ZV1_06_63_02 : Mesh_ZV1_06_63_02 {
+    DynArray_Z<SubMesh_Z> sub_meshes;
+};
+
+using MeshPs2_Z = le MeshPs2_ZV1_06_63_02;
+
 // Platform dispatch
 
 struct MeshFile_Z {
@@ -519,6 +538,10 @@ struct MeshFile_Z {
 
         (Platform::GameCube): {
             MeshGC_Z mesh;
+        }
+
+        (Platform::PS2): {
+            MeshPs2_Z mesh;
         }
 
         (_): {
